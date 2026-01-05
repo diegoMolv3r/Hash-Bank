@@ -89,5 +89,5 @@ El modelo de datos ha sido diseñado siguiendo la 3ra Forma Normal (3NF) para as
 ---
 
 <div align="center">
-  <sub>Desarrollado con fines educativos y de portafolio por [Tu Nombre].</sub>
+  <sub>Desarrollado con fines educativos y de portafolio por Diego Molver.</sub>
 </div>
