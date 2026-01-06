@@ -16,6 +16,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\HashBank.Domain\HashBank.Domain.csproj" />
+    <ProjectReference Include="..\HashBank.Infrastructure\HashBank.Infrastructure.csproj" />
+    <ProjectReference Include="..\HashBank.Services\HashBank.Services.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Using Include="Xunit" />
   </ItemGroup>
 

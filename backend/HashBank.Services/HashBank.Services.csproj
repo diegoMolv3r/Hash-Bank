@@ -6,4 +6,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\HashBank.Infrastructure\HashBank.Infrastructure.csproj" />
+  </ItemGroup>
+
 </Project>

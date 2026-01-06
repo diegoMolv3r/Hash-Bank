@@ -15,7 +15,7 @@ namespace HashBank.Domain.Entities
         public string Email { get; set; }
         public string PasswordHash { get; set; }
 
-        // Propiedad de Navegación (Relación 1 a N: Un usuario tiene muchas cuentas)
+        // Relación 1 a N Un usuario podria tener muchas cuentas
         public ICollection<Account> Accounts { get; set; }
     }
 }
