@@ -1,7 +1,9 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\backend",
+    "\\backend\\HashBank.Api"
   ],
-  "SelectedNode": "\\C:\\Users\\User\\Desktop\\Projects\\Hash-Bank",
+  "SelectedNode": "\\backend\\HashBank.Api\\HashBank.Api.sln",
   "PreviewInSolutionExplorer": false
 }
