@@ -5,9 +5,8 @@ namespace HashBanck.Services
 {
     public interface ITransferService
     {
-        public void PerformTransfer(int fromAccountId, int toAccountId, decimal amount);
+        public Task PerformTransfer(int fromAccountId, int toAccountId, decimal amount);
     }
-    //public class TransferService(IAccountRepository _accountRepository, IUnitOfWork _unitOfWork) : ITransferService
     public class TransferService(
         IAccountRepository _accountRepository,
         ITransactionRepository _transactionRepository,
@@ -16,7 +15,7 @@ namespace HashBanck.Services
         : ITransferService
     {
 
-        public async void PerformTransfer(int fromAccountId, int toAccountId, decimal amount)
+        public async Task PerformTransfer(int fromAccountId, int toAccountId, decimal amount)
         {
             Account origen = await _accountRepository.GetByIdAsync(fromAccountId);
             Account destino = await _accountRepository.GetByIdAsync(toAccountId);
@@ -25,16 +24,18 @@ namespace HashBanck.Services
             {
                 throw new InvalidOperationException("Saldo insuficiente en la cuenta de origen.");
             }
+            else
+            {
+                origen.Balance -= amount;
+                destino.Balance += amount;
 
-            origen.Balance -= amount;
-            destino.Balance += amount;
+                _accountRepository.Update(origen);
+                _accountRepository.Update(destino);
 
-            _accountRepository.Update(origen);
-            _accountRepository.Update(destino);
+                _transactionRepository.Add(new Transfer { });
 
-            _transactionRepository.Add(new Transfer {});
-
-            _unitOfWork.SaveChanges();
+                _unitOfWork.SaveChanges();
+            }
         }
     }
 }
