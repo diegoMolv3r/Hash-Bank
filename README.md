@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="ruta/a/tu/logo-hashbank.png" alt="Hash Bank Logo" width="150">
+  <!-- <img src="ruta/a/tu/logo-hashbank.png" alt="Hash Bank Logo" width="150"> -->
   <h1>Hash Bank</h1>
   <p>
     <strong>Billetera Virtual Segura con enfoque en Integridad de Datos y Prevención de Fraude.</strong>
