@@ -7,13 +7,19 @@ namespace HashBanck.Services
     {
         public void PerformTransfer(int fromAccountId, int toAccountId, decimal amount);
     }
-    public class TransferService(IAccountRepository _accountRepository, IUnitOfWork _unitOfWork) : ITransferService
+    //public class TransferService(IAccountRepository _accountRepository, IUnitOfWork _unitOfWork) : ITransferService
+    public class TransferService(
+        IAccountRepository _accountRepository,
+        ITransactionRepository _transactionRepository,
+        IUnitOfWork _unitOfWork) 
+        
+        : ITransferService
     {
 
-        public void PerformTransfer(int fromAccountId, int toAccountId, decimal amount)
+        public async void PerformTransfer(int fromAccountId, int toAccountId, decimal amount)
         {
-            Account origen = _accountRepository.GetById(fromAccountId);
-            Account destino = _accountRepository.GetById(toAccountId);
+            Account origen = await _accountRepository.GetByIdAsync(fromAccountId);
+            Account destino = await _accountRepository.GetByIdAsync(toAccountId);
 
             if (origen.Balance < amount)
             {
@@ -26,7 +32,7 @@ namespace HashBanck.Services
             _accountRepository.Update(origen);
             _accountRepository.Update(destino);
 
-            _accountRepository.AddTransaction(new Transfer {});
+            _transactionRepository.Add(new Transfer {});
 
             _unitOfWork.SaveChanges();
         }
