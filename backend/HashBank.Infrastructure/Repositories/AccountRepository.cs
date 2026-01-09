@@ -1,14 +1,16 @@
 ﻿using HashBank.Domain.Entities;
 using HashBank.Infrastructure.Persistence;
+using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 using System.Linq.Expressions;
 
 namespace HashBank.Infrastructure.Repositories
 {
     public interface IAccountRepository : IGenericRepository<Account>
     {
-        public async Task<Account> GetAccountByAliasAsync(string alias);
-        public async Task<Account> GetAccountByCbuAsync(string cbu);
-        public async Task<Account> GetAccountByUserIdAsync(int userId);
+        public Task<List<Account>> GetAccountsByAliasAsync(string alias);
+        public Task<List<Account>> GetAccountsByCbuAsync(string cbu);
+        public Task<List<Account>> GetAccountsByUserIdAsync(int userId);
     }
 
     public class AccountRepository : IAccountRepository
@@ -35,33 +37,36 @@ namespace HashBank.Infrastructure.Repositories
             throw new NotImplementedException();
         }
 
+
         public Task<IEnumerable<Account>> FindAsync(Expression<Func<Account, bool>> expression)
         {
             throw new NotImplementedException();
         }
-
         public Task<IEnumerable<Account>> GetAllAsync()
         {
             return Task.FromResult(_context.Accounts.AsEnumerable());
         }
-
-        public Task<Account> GetByIdAsync(int id)
+        public async Task<Account?> GetByIdAsync(int id)
         {
-            return Task.FromResult(_context.Accounts.Find(id));
+            return await _context.Accounts.FindAsync(id);
         }
 
-        
-        public async Task<Account> GetAccountByAliasAsync(string alias) 
+
+        public async Task<List<Account>> GetAccountsByAliasAsync(string alias) 
         {
-            return null; // _context.Accounts.Where(a => a. == alias).FirstOrDefaultAsync();
+            //List<Account>? accounts = await _context.Accounts.Where(a => a.Alias == alias).ToListAsync();
+            //return accounts;
+            // todavia no tengo alias como atributo
+            return new List<Account>();
         }
-        public async Task<Account> GetAccountByCbuAsync(string cbu) 
+        public async Task<List<Account>> GetAccountsByCbuAsync(string cbu) 
         {
-            return await _context.Accounts.Where(a => a.CBU == cbu).FirstOrDefault();
+            List<Account>? accounts = await _context.Accounts.Where(a => a.CBU == cbu).ToListAsync();
+            return accounts;
         }
-        public async Task<List<Account>> GetAccountsByUserIdAsync(int userId) 
-        { 
-            return await _context.Accounts.Where(a => a.Id == userId).GetAllAsync();
+        public async Task<List<Account>> GetAccountsByUserIdAsync(int userId)
+        {
+            return await _context.Accounts.Where(a => a.UserId == userId).ToListAsync();
         }
     }
 }

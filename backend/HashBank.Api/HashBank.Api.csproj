@@ -16,6 +16,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\HashBank.Infrastructure\HashBank.Infrastructure.csproj" />
+    <ProjectReference Include="..\HashBank.Services\HashBank.Services.csproj" />
   </ItemGroup>
 
 </Project>
