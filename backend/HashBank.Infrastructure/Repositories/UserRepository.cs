@@ -19,7 +19,7 @@ namespace HashBank.Infrastructure.Repositories
 
         public void Add(User entity)
         {
-            throw new NotImplementedException();
+            _context.Users.Add(entity);
         }
 
         public Task<IEnumerable<User>> GetAllAsync()

@@ -7,12 +7,9 @@ namespace HashBank.Services
     {
         Task<int> CreateAccountAsync(int userId);
         Task<AccountDto> GetAccountByUserIdAsync(int userId);
-        Task<AccountDto> GetAccountByAliasAsync(string alias);
         Task<AccountDto> GetAccountByCbuAsync(string cbu);
         Task<bool> AccountExistsAsync(int accountId);
-        Task UpdateAliasAsync(int accountId, string newAlias);
         Task<bool> IsAccountActiveAsync(int accountId);
-        Task FreezeAccountAsync(int accountId);
     }
     public class AccountService(AccountRepository _accountRepository, IUnitOfWork _unitOfWork) : IAccountService
     {
@@ -22,16 +19,6 @@ namespace HashBank.Services
         }
 
         public Task<int> CreateAccountAsync(int userId)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task FreezeAccountAsync(int accountId)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<AccountDto> GetAccountByAliasAsync(string alias)
         {
             throw new NotImplementedException();
         }
@@ -51,9 +38,5 @@ namespace HashBank.Services
             throw new NotImplementedException();
         }
 
-        public Task UpdateAliasAsync(int accountId, string newAlias)
-        {
-            throw new NotImplementedException();
-        }
     }
 }
