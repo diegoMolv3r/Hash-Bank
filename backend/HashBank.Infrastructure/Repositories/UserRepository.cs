@@ -11,7 +11,7 @@ namespace HashBank.Infrastructure.Repositories
 {
     public interface IUserRepository : IGenericRepository<User>
     {
-
+        Task<bool> UserExistsAsync(string email);
     }
     public class UserRepository(HashBankDbContext context) : IUserRepository 
     {
@@ -40,6 +40,11 @@ namespace HashBank.Infrastructure.Repositories
         public void Update(User entity)
         {
             throw new NotImplementedException();
+        }
+
+        public Task<bool> UserExistsAsync(string email)
+        {
+            return Task.FromResult(_context.Users.Any(u => u.Email == email));
         }
     }
 }
