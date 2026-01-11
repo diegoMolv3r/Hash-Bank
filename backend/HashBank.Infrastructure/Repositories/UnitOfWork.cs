@@ -1,4 +1,5 @@
-﻿using System;
+﻿using HashBank.Infrastructure.Persistence;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,11 +11,13 @@ namespace HashBank.Infrastructure.Repositories
     {
         void SaveChanges();
     }
-    public class UnitOfWork : IUnitOfWork
+    public class UnitOfWork(HashBankDbContext context) : IUnitOfWork
     {
-        public void SaveChanges()
+        HashBankDbContext _context = context;
+
+        public async void SaveChanges()
         {
-            // Lógica para guardar los cambios en la base de datos
+            await _context.SaveChangesAsync();
         }
     }
 }
