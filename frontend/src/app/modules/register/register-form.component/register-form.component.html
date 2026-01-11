@@ -1,0 +1,126 @@
+<div class="fixed top-0 right-0 -z-10 opacity-10 pointer-events-none">
+  <div class="w-64 h-64 bg-primary rounded-full blur-3xl translate-x-1/2 -translate-y-1/2"></div>
+</div>
+<div class="fixed bottom-0 left-0 -z-10 opacity-10 pointer-events-none">
+  <div class="w-96 h-96 bg-primary rounded-full blur-3xl -translate-x-1/2 translate-y-1/2"></div>
+</div>
+
+<div class="bg-background-light dark:bg-background-dark font-display text-hash-blue dark:text-white min-h-screen flex flex-col">
+
+  <div class="flex items-center justify-between p-6 pb-2">
+    <button routerLink="/login" class="flex size-10 items-center justify-center rounded-full bg-white dark:bg-zinc-800 shadow-sm border border-zinc-100 dark:border-zinc-700 hover:bg-zinc-50 dark:hover:bg-zinc-700 transition-colors">
+      <span class="material-symbols-outlined text-hash-blue dark:text-white text-sm">arrow_back_ios_new</span>
+    </button>
+    <div class="w-10"></div>
+  </div>
+
+  <div class="flex-1 px-6 pb-12 overflow-y-auto">
+    
+    <div class="flex flex-col items-center justify-center pt-8 pb-10">
+      <div class="size-20 bg-primary/20 rounded-2xl flex items-center justify-center mb-4 backdrop-blur-sm">
+        <span class="material-symbols-outlined text-primary text-5xl" style="font-variation-settings: 'FILL' 1;">hexagon</span>
+      </div>
+      <h1 class="text-3xl font-extrabold tracking-tight text-hash-blue dark:text-white">HashBank</h1>
+      <p class="text-zinc-500 dark:text-zinc-400 mt-2 font-medium">Crea tu cuenta segura</p>
+    </div>
+
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="space-y-5 max-w-md mx-auto">
+
+      <div class="flex flex-col gap-2">
+        <label class="text-hash-blue dark:text-zinc-200 text-sm font-bold tracking-wide uppercase px-2">Nombre</label>
+        <input 
+          formControlName="firstName"
+          type="text"
+          class="form-input w-full h-14 px-6 rounded-full border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-hash-blue dark:text-white placeholder:text-zinc-400 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all duration-200" 
+          placeholder="Tu nombre" 
+        />
+        <div *ngIf="registerForm.get('firstName')?.invalid && registerForm.get('firstName')?.touched" class="text-red-500 text-xs px-6 font-medium animate-pulse">
+          El nombre es requerido.
+        </div>
+      </div>
+
+      <div class="flex flex-col gap-2">
+        <label class="text-hash-blue dark:text-zinc-200 text-sm font-bold tracking-wide uppercase px-2">Apellido</label>
+        <input 
+          formControlName="lastName"
+          type="text"
+          class="form-input w-full h-14 px-6 rounded-full border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-hash-blue dark:text-white placeholder:text-zinc-400 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all duration-200" 
+          placeholder="Tu apellido" 
+        />
+        <div *ngIf="registerForm.get('lastName')?.invalid && registerForm.get('lastName')?.touched" class="text-red-500 text-xs px-6 font-medium animate-pulse">
+          El apellido es requerido.
+        </div>
+      </div>
+
+      <div class="flex flex-col gap-2">
+        <label class="text-hash-blue dark:text-zinc-200 text-sm font-bold tracking-wide uppercase px-2">Email</label>
+        <input 
+          formControlName="email"
+          type="email"
+          class="form-input w-full h-14 px-6 rounded-full border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-hash-blue dark:text-white placeholder:text-zinc-400 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all duration-200" 
+          placeholder="nombre@ejemplo.com" 
+        />
+        <div *ngIf="registerForm.get('email')?.invalid && registerForm.get('email')?.touched" class="text-red-500 text-xs px-6 font-medium animate-pulse">
+          Ingresa un email válido.
+        </div>
+      </div>
+
+      <div class="flex flex-col gap-2 relative">
+        <label class="text-hash-blue dark:text-zinc-200 text-sm font-bold tracking-wide uppercase px-2">Contraseña</label>
+        <div class="relative">
+          <input 
+            formControlName="password"
+            [type]="showPassword ? 'text' : 'password'"
+            class="form-input w-full h-14 px-6 rounded-full border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-hash-blue dark:text-white placeholder:text-zinc-400 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all duration-200" 
+            placeholder="Crea una contraseña" 
+          />
+          <button type="button" (click)="togglePassword()" class="absolute right-5 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-primary transition-colors focus:outline-none">
+            <span class="material-symbols-outlined">{{ showPassword ? 'visibility_off' : 'visibility' }}</span>
+          </button>
+        </div>
+        <div *ngIf="registerForm.get('password')?.invalid && registerForm.get('password')?.touched" class="text-red-500 text-xs px-6 font-medium animate-pulse">
+          Mínimo 6 caracteres.
+        </div>
+      </div>
+
+      <div class="flex flex-col gap-2">
+        <label class="text-hash-blue dark:text-zinc-200 text-sm font-bold tracking-wide uppercase px-2">Confirmar Contraseña</label>
+        <input 
+          formControlName="confirmPassword"
+          type="password"
+          class="form-input w-full h-14 px-6 rounded-full border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-hash-blue dark:text-white placeholder:text-zinc-400 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all duration-200" 
+          placeholder="Repite tu contraseña" 
+        />
+        <div *ngIf="registerForm.hasError('passwordMismatch') && registerForm.get('confirmPassword')?.touched" class="text-red-500 text-xs px-6 font-medium animate-pulse">
+          Las contraseñas no coinciden.
+        </div>
+      </div>
+
+      <div *ngIf="errorMessage" class="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 text-red-600 dark:text-red-400 px-4 py-3 rounded-xl text-sm flex items-center gap-2">
+        <span class="material-symbols-outlined text-lg">error</span>
+        {{ errorMessage }}
+      </div>
+
+      <p class="text-xs text-zinc-500 dark:text-zinc-400 text-center px-6 pt-2">
+        Al crear la cuenta aceptas nuestros <span class="text-primary font-semibold cursor-pointer hover:underline">Términos</span> y <span class="text-primary font-semibold cursor-pointer hover:underline">Políticas</span>.
+      </p>
+
+      <div class="pt-4">
+        <button 
+          type="submit" 
+          [disabled]="registerForm.invalid"
+          class="w-full h-16 bg-primary hover:bg-emerald-400 text-hash-blue font-extrabold text-lg rounded-full shadow-lg shadow-primary/20 transition-all active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed disabled:shadow-none">
+          Crear Cuenta
+        </button>
+      </div>
+
+      <div class="pt-6 pb-4 text-center">
+        <p class="text-zinc-500 dark:text-zinc-400 font-medium">
+          ¿Ya tienes cuenta? 
+          <a routerLink="/login" class="text-hash-blue dark:text-primary font-bold ml-1 decoration-primary decoration-2 underline-offset-4 hover:underline cursor-pointer">Inicia Sesión</a>
+        </p>
+      </div>
+
+    </form>
+  </div>
+</div>
