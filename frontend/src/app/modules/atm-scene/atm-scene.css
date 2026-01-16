@@ -1,0 +1,28 @@
+.scene-container {
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.atm-overlay {
+  position: absolute;
+  top: 0; left: 0; width: 100%; height: 100%;
+  pointer-events: none; /* Dejar pasar clics si no estás sobre el formulario */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.atm-screen {
+  pointer-events: auto; /* Reactivar clics para los botones */
+  width: 300px;
+  height: 200px;
+  background: rgba(0, 20, 40, 0.9);
+  border: 2px solid #00ffcc;
+  color: white;
+  padding: 20px;
+  text-align: center;
+  animation: fadeIn 1s;
+}
+
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
