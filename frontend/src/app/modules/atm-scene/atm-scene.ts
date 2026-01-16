@@ -1,9 +1,8 @@
-import { Component, ElementRef, OnInit, ViewChild, AfterViewInit, OnDestroy } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild, AfterViewInit, OnDestroy, NgZone } from '@angular/core';
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import { RoomEnvironment } from 'three/examples/jsm/environments/RoomEnvironment.js';
-import { PMREMGenerator } from 'three/src/extras/PMREMGenerator.js';
 import gsap from 'gsap';
 
 @Component({
@@ -23,25 +22,21 @@ export class AtmSceneComponent implements AfterViewInit, OnDestroy {
   private mouse = new THREE.Vector2();
   public isInterfaceActive = false;
 
-  constructor() { }
+  constructor(private ngZone: NgZone) { }
 
   private onMouseClick(event: MouseEvent): void {
-    // Si la interfaz ya está abierta, no hacemos nada (para no volver a animar)
     if (this.isInterfaceActive) return;
 
     const canvas = this.rendererCanvas.nativeElement;
     const rect = canvas.getBoundingClientRect();
 
-    // Calcular posición del mouse normalizada (-1 a +1)
     this.mouse.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
     this.mouse.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
 
-    // Disparar rayo
     this.raycaster.setFromCamera(this.mouse, this.camera);
     const intersects = this.raycaster.intersectObjects(this.scene.children, true);
 
     if (intersects.length > 0) {
-      // Si tocamos cualquier parte del modelo, hacemos foco
       console.log('Click detectado en el cajero');
       this.focusOnScreen();
     }
@@ -73,13 +68,20 @@ export class AtmSceneComponent implements AfterViewInit, OnDestroy {
         this.isInterfaceActive = true;
       }
     });
-}
+
+    onComplete: () => {
+      console.log("Animación terminada. Activando interfaz..."); 
+
+      this.ngZone.run(() => {
+        this.isInterfaceActive = true;
+      });
+    } 
+  }
 
   public exitAtm(): void {
     this.isInterfaceActive = false;
-    this.controls.enabled = true; // Devolvemos el control al usuario
+    this.controls.enabled = true; 
 
-    // Regresamos la cámara a la posición original
     gsap.to(this.camera.position, {
       x: 0, 
       y: 1.5, 
@@ -227,5 +229,5 @@ export class AtmSceneComponent implements AfterViewInit, OnDestroy {
   console.log(`Mira a (Target):   x: ${target.x.toFixed(2)}, y: ${target.y.toFixed(2)}, z: ${target.z.toFixed(2)}`);
   
   console.log('---------------------------');
-}
+  }
 }

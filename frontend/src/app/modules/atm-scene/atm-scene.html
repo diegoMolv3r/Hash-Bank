@@ -1,10 +1,19 @@
 <div class="scene-container">
-    <canvas #rendererCanvas></canvas>
+  <canvas #rendererCanvas></canvas>
 
-    <!-- <button (click)="logCoordinates()"
-        style="position: absolute; top: 10px; left: 10px; z-index: 100; padding: 10px; background: red; color: white;">
-        📷 IMPRIMIR COORDENADAS
-    </button> -->
+  <div class="atm-overlay-container" *ngIf="isInterfaceActive">
+    
+    <div class="atm-screen-interface">
+      
+      <h2 class="atm-title">Bienvenido a HashBank</h2>
+      
+      <div class="atm-buttons-grid">
+        <button class="atm-btn">Ingresar</button>
+        <button class="atm-btn">Retirar</button>
+        <button class="atm-btn">Consultar</button>
+        <button class="atm-btn atm-btn-exit" (click)="exitAtm()">Salir</button>
+      </div>
 
-
+    </div>
+  </div>
 </div>
