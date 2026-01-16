@@ -48,27 +48,20 @@ export class AtmSceneComponent implements AfterViewInit, OnDestroy {
   }
 
   private focusOnScreen(): void {
-    // Coordenadas OBJETIVO (A donde mira la cámara)
-    // Ajusta la 'y' para subir/bajar la mirada a la pantalla
-    const targetPoint = new THREE.Vector3(0, 1.3, 0); 
+    const targetPoint = new THREE.Vector3(0, 13, -12); 
 
-    // Coordenadas DE LA CÁMARA (Donde se coloca la cámara)
-    // Ajusta la 'z' para acercarte más o menos
-    const cameraPoint = new THREE.Vector3(0, 1.3, 0.8); 
+    const cameraPoint = new THREE.Vector3(0, 21, 13); 
 
-    // Desactivamos control manual
     this.controls.enabled = false;
 
-    // Animar posición de la cámara
     gsap.to(this.camera.position, {
       x: cameraPoint.x,
       y: cameraPoint.y,
       z: cameraPoint.z,
-      duration: 1.5,
+      duration: 1.5, 
       ease: 'power2.inOut'
     });
 
-    // Animar hacia dónde mira la cámara
     gsap.to(this.controls.target, {
       x: targetPoint.x,
       y: targetPoint.y,
@@ -77,11 +70,10 @@ export class AtmSceneComponent implements AfterViewInit, OnDestroy {
       ease: 'power2.inOut',
       onUpdate: () => this.controls.update(),
       onComplete: () => {
-        // Al terminar, mostramos el HTML
         this.isInterfaceActive = true;
       }
     });
-  }
+}
 
   public exitAtm(): void {
     this.isInterfaceActive = false;
@@ -118,13 +110,14 @@ export class AtmSceneComponent implements AfterViewInit, OnDestroy {
     const width = canvas.parentElement?.clientWidth || window.innerWidth;
     const height = canvas.parentElement?.clientHeight || window.innerHeight;
 
-    // 1. ESCENA Y FONDO
     this.scene = new THREE.Scene();
     this.scene.background = new THREE.Color(0x1a1a2e); // Color azul oscuro estilo "banco seguro"
 
     // 2. CÁMARA
+    // poner la perspectiva inicial en el centro 
     this.camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 1000);
-    this.camera.position.set(0, 1.5, 5); // Posición inicial: un poco arriba y atrás
+    this.camera.position.set(-0.33, 21.41, 34.43); // Posición inicial x y z
+   
 
     // 3. RENDERER
     this.renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
@@ -133,12 +126,11 @@ export class AtmSceneComponent implements AfterViewInit, OnDestroy {
     this.renderer.shadowMap.enabled = true; // Activar sombras
 
     this.renderer.outputColorSpace = THREE.SRGBColorSpace;
-    // Opcional: ajusta la exposición si se ve muy brillante u oscuro después
     this.renderer.toneMapping = THREE.ACESFilmicToneMapping;
     this.renderer.toneMappingExposure = 0.5;
 
-    // 4. LUCES (Clave para que se vea bien)
-    const ambientLight = new THREE.AmbientLight(0xffffff, 0.2); // <--- Estaba en 0.6
+    // 4. LUCES
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
     this.scene.add(ambientLight);
 
     // Bajar la luz direccional (el sol)
@@ -151,11 +143,26 @@ export class AtmSceneComponent implements AfterViewInit, OnDestroy {
     pmremGenerator.compileEquirectangularShader();
     this.scene.environment = pmremGenerator.fromScene(new RoomEnvironment(), 0.04).texture;
 
-    this.controls = new OrbitControls(this.camera, this.renderer.domElement);
 
     // 5. CONTROLES (Para rotar con el mouse mientras desarrollas)
     this.controls = new OrbitControls(this.camera, this.renderer.domElement);
     this.controls.enableDamping = true; // Movimiento suave
+
+    this.controls.target.set(-1.86, 10.51, -2.79);
+
+    this.controls.update();
+
+    // INICIAL
+    // Cámara (Position): x: -0.33, y: 21.41, z: 34.43
+    // Mira a (Target):   x: -1.86, y: 10.51, z: -2.79
+
+    // ZOOM AL CAJERO
+    // Cámara (Position): x: -1.34, y: 20.73, z: 12.95
+    // Mira a (Target):   x: -1.10, y: 15.62, z: -4.50
+
+    // ZOOM A LA PANTALLA
+    // Cámara (Position): x: -1.48, y: 19.68, z: 6.02
+    // Mira a (Target):   x: -1.70, y: 16.32, z: -4.34
   }
 
   private loadModel(): void {
@@ -207,4 +214,18 @@ export class AtmSceneComponent implements AfterViewInit, OnDestroy {
     // Limpieza para evitar fugas de memoria
     if (this.animationId) cancelAnimationFrame(this.animationId);
   }
+
+  public logCoordinates(): void {
+  console.log('--- COPIA ESTOS NÚMEROS ---');
+  
+  // Posición de la cámara (dónde está parada)
+  const pos = this.camera.position;
+  console.log(`Cámara (Position): x: ${pos.x.toFixed(2)}, y: ${pos.y.toFixed(2)}, z: ${pos.z.toFixed(2)}`);
+  
+  // Punto de mira (hacia dónde está mirando)
+  const target = this.controls.target;
+  console.log(`Mira a (Target):   x: ${target.x.toFixed(2)}, y: ${target.y.toFixed(2)}, z: ${target.z.toFixed(2)}`);
+  
+  console.log('---------------------------');
+}
 }
