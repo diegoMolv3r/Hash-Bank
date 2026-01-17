@@ -1,4 +1,6 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Output} from '@angular/core';
+  
+export type ScreenViewMode = 'WELCOME' | 'TRANSACTION';
 
 @Component({
   selector: 'app-atm-screen',
@@ -7,15 +9,20 @@ import { Component, EventEmitter, Output } from '@angular/core';
   styleUrl: './atm-screen.css',
 })
 export class AtmScreen {
+  @Output() onEnterScreen = new EventEmitter<void>();
   @Output() onExit = new EventEmitter<void>();
+
+  viewMode: ScreenViewMode = 'WELCOME';
 
   constructor() { }
 
-  handleLogin() {
-    console.log('Navegando al login...');
+  handleScreenTouch() {
+    this.viewMode = 'TRANSACTION'; 
+    this.onEnterScreen.emit();     
   }
 
   handleExit() {
-    this.onExit.emit();
+    this.viewMode = 'WELCOME'; 
+    this.onExit.emit();        
   }
 }

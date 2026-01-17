@@ -26,89 +26,6 @@ export class AtmSceneComponent implements AfterViewInit, OnDestroy {
 
   constructor(private ngZone: NgZone) { }
 
-  private onMouseClick(event: MouseEvent): void {
-    if (this.isInterfaceActive) return;
-
-    const canvas = this.rendererCanvas.nativeElement;
-    const rect = canvas.getBoundingClientRect();
-
-    this.mouse.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
-    this.mouse.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
-
-    this.raycaster.setFromCamera(this.mouse, this.camera);
-    const intersects = this.raycaster.intersectObjects(this.scene.children, true);
-
-    if (intersects.length > 0) {
-      console.log('Click detectado en el cajero');
-      this.focusOnScreen();
-    }
-  }
-
-  private focusOnScreen(): void {
-    const targetPoint = new THREE.Vector3(0, 13, -12); 
-
-    const cameraPoint = new THREE.Vector3(0, 21, 13); 
-
-    this.controls.enabled = false;
-
-    gsap.to(this.camera.position, {
-      x: cameraPoint.x,
-      y: cameraPoint.y,
-      z: cameraPoint.z,
-      duration: 1.5, 
-      ease: 'power2.inOut'
-    });
-
-    gsap.to(this.controls.target, {
-      x: targetPoint.x,
-      y: targetPoint.y,
-      z: targetPoint.z,
-      duration: 1.5,
-      ease: 'power2.inOut',
-      onUpdate: () => this.controls.update(),
-      onComplete: () => {
-        this.isInterfaceActive = true;
-      }
-    });
-
-    onComplete: () => {
-      console.log("Animación terminada. Activando interfaz..."); 
-
-      this.ngZone.run(() => {
-        this.isInterfaceActive = true;
-      });
-    } 
-  }
-
-  public exitAtm(): void {
-    this.isInterfaceActive = false;
-    this.controls.enabled = true; 
-
-    gsap.to(this.camera.position, {
-      x: 0, 
-      y: 1.5, 
-      z: 5,
-      duration: 1.2,
-      ease: 'power2.inOut'
-    });
-
-    gsap.to(this.controls.target, {
-      x: 0, y: 0, z: 0,
-      duration: 1.2,
-      onUpdate: () => this.controls.update()
-    });
-  }
-  
-  ngAfterViewInit(): void {
-    this.initThree();
-    this.loadModel();
-    this.animate();
-    
-    // Ajustar si el usuario cambia el tamaño de la ventana
-    this.rendererCanvas.nativeElement.addEventListener('click', (event) => this.onMouseClick(event));
-    window.addEventListener('resize', () => this.onWindowResize());
-  }
-  
   private initThree(): void {
     const canvas = this.rendererCanvas.nativeElement;
     const width = canvas.parentElement?.clientWidth || window.innerWidth;
@@ -206,13 +123,119 @@ export class AtmSceneComponent implements AfterViewInit, OnDestroy {
   }
 
   private onWindowResize(): void {
-    // Mantener la proporción al cambiar tamaño de ventana
     const width = window.innerWidth;
     const height = window.innerHeight;
     this.camera.aspect = width / height;
     this.camera.updateProjectionMatrix();
     this.renderer.setSize(width, height);
   }
+  
+  private onMouseClick(event: MouseEvent): void {
+    if (this.isInterfaceActive) return;
+
+    const canvas = this.rendererCanvas.nativeElement;
+    const rect = canvas.getBoundingClientRect();
+
+    this.mouse.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
+    this.mouse.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
+
+    this.raycaster.setFromCamera(this.mouse, this.camera);
+    const intersects = this.raycaster.intersectObjects(this.scene.children, true);
+
+    if (intersects.length > 0) {
+      console.log('Click detectado en el cajero');
+      this.focusOnScreen();
+    }
+  }
+
+  private focusOnScreen(): void {
+    const targetPoint = new THREE.Vector3(0, 13, -12); 
+
+    const cameraPoint = new THREE.Vector3(0, 21, 13); 
+
+    this.controls.enabled = false;
+
+    gsap.to(this.camera.position, {
+      x: cameraPoint.x,
+      y: cameraPoint.y,
+      z: cameraPoint.z,
+      duration: 1.5, 
+      ease: 'power2.inOut'
+    });
+
+    gsap.to(this.controls.target, {
+      x: targetPoint.x,
+      y: targetPoint.y,
+      z: targetPoint.z,
+      duration: 1.5,
+      ease: 'power2.inOut',
+      onUpdate: () => this.controls.update(),
+      onComplete: () => {
+        this.isInterfaceActive = true;
+      }
+    });
+
+    onComplete: () => {
+      console.log("Animación terminada. Activando interfaz..."); 
+
+      this.ngZone.run(() => {
+        this.isInterfaceActive = true;
+      });
+    } 
+  }
+
+  public zoomToScreenDeep(): void {
+  const deepTarget = new THREE.Vector3(0, 17, -3); 
+  const deepCamera = new THREE.Vector3(0, 19, 5);
+
+  gsap.to(this.camera.position, {
+    x: deepCamera.x, y: deepCamera.y, z: deepCamera.z,
+    duration: 1,
+    ease: 'power2.inOut'
+  });
+
+  gsap.to(this.controls.target, {
+    x: deepTarget.x, y: deepTarget.y, z: deepTarget.z,
+    duration: 1,
+    onUpdate: () => this.controls.update()
+  });
+}
+
+  public exitAtm(): void {
+    this.isInterfaceActive = false;
+    this.controls.enabled = true; 
+
+    gsap.to(this.camera.position, {
+      x: 0, 
+      y: 1.5, 
+      z: 5,
+      duration: 1.2,
+      ease: 'power2.inOut'
+    });
+
+    gsap.to(this.controls.target, {
+      x: 0, y: 0, z: 0,
+      duration: 1.2,
+      onUpdate: () => this.controls.update()
+    });
+  }
+  
+  ngAfterViewInit(): void {
+    this.initThree();
+    this.loadModel();
+    this.animate();
+    
+    this.rendererCanvas.nativeElement.addEventListener('click', (event) => this.onMouseClick(event));
+    window.addEventListener('resize', () => this.onWindowResize());
+  }
+  
+  
+
+  
+
+  
+
+  
 
   ngOnDestroy(): void {
     // Limpieza para evitar fugas de memoria

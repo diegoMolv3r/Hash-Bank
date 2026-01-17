@@ -1,3 +1,22 @@
 <div class="screen-content">
-  <h2 class="atm-title">Bienvenido a HashBank</h2>
+  @if (viewMode === 'WELCOME') {
+    <div class="welcome-overlay" (click)="handleScreenTouch()">
+        <h1 class="blink-text">Toque la pantalla para operar</h1>
+        <p>Hash Bank</p>
+    </div>
+  }  
+
+  @if (viewMode === 'WELCOME') {
+    <div class="transaction-ui">
+        <h2>Ingrese su PIN</h2>
+        
+        <div class="buttons-grid">
+        <button>1</button> 
+        <button>2</button> 
+        <button>3</button>
+        </div>
+
+        <button class="btn-cancel" (click)="handleExit()">Cancelar Operación</button>
+    </div>
+  }
 </div>
