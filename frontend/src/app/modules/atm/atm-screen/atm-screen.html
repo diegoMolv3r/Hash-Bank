@@ -1,3 +1,7 @@
-<div class="screen-content">
-  <h2 class="atm-title">Bienvenido a HashBank</h2>
+<div (click)="handleScreenTouch()">
+@if (viewMode === 'WELCOME') {
+    <app-view-welcome></app-view-welcome>
+} @else if (viewMode === 'TRANSACTION') {
+    <app-view-menu></app-view-menu>
+}
 </div>
