@@ -4,9 +4,11 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import { RoomEnvironment } from 'three/examples/jsm/environments/RoomEnvironment.js';
 import gsap from 'gsap';
+import { AtmScreen } from '../atm-screen/atm-screen';
 
 @Component({
   selector: 'app-atm-scene',
+  imports: [AtmScreen],
   templateUrl: './atm-scene.html',
   styleUrls: ['./atm-scene.css']
 })
