@@ -21,6 +21,14 @@
   z-index: 999;
 }
 
+.atm-screen-wrapper {
+  pointer-events: auto;
+  width: 500px; 
+  height: 350px;
+  border: 1px solid red; 
+}
+
+
 .atm-screen-interface {
   pointer-events: auto; 
   width: 500px; 
@@ -81,10 +89,5 @@
   to { opacity: 1; transform: scale(1); }
 }
 
-.atm-screen-wrapper {
-  pointer-events: auto;
-  width: 500px; 
-  height: 350px;
-  border: 1px solid red; 
-}
+
 
