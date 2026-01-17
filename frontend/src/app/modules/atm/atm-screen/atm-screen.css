@@ -1,25 +1,3 @@
-:host {
-  width: 100%;
-  height: 100%;
-  display: block;
-  pointer-events: auto;
-  width: 250px; 
-  height: 190px;
-  border: 1px solid red; 
-}
-
-.screen-content {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  background: rgba(0, 20, 40, 0.8); 
-  color: #fff;
-  left: 10px;
-}
-
 .atm-title {
   color: #00ffcc;
   margin-bottom: 30px;

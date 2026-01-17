@@ -1,22 +1,7 @@
-<div class="screen-content">
-  @if (viewMode === 'WELCOME') {
-    <div class="welcome-overlay" (click)="handleScreenTouch()">
-        <h1 class="blink-text">Toque la pantalla para operar</h1>
-        <p>Hash Bank</p>
-    </div>
-  }  
-
-  @if (viewMode === 'WELCOME') {
-    <div class="transaction-ui">
-        <h2>Ingrese su PIN</h2>
-        
-        <div class="buttons-grid">
-        <button>1</button> 
-        <button>2</button> 
-        <button>3</button>
-        </div>
-
-        <button class="btn-cancel" (click)="handleExit()">Cancelar Operación</button>
-    </div>
-  }
+<div (click)="handleScreenTouch()">
+@if (viewMode === 'WELCOME') {
+    <app-view-welcome></app-view-welcome>
+} @else if (viewMode === 'TRANSACTION') {
+    <app-view-menu></app-view-menu>
+}
 </div>

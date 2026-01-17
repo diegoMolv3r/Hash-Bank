@@ -1,10 +1,11 @@
 import { Component, EventEmitter, Output} from '@angular/core';
-  
+import { ViewWelcome } from "../atm-views/view-welcome/view-welcome";
+import { ViewMenu } from "../atm-views/view-menu/view-menu";
 export type ScreenViewMode = 'WELCOME' | 'TRANSACTION';
 
 @Component({
   selector: 'app-atm-screen',
-  imports: [],
+  imports: [ViewWelcome, ViewMenu],
   templateUrl: './atm-screen.html',
   styleUrl: './atm-screen.css',
 })
