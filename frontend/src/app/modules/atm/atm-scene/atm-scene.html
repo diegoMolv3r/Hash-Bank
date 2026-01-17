@@ -1,0 +1,9 @@
+<div class="scene-container">
+  <canvas #rendererCanvas></canvas>
+
+  <div class="atm-overlay-container">
+    @if (isInterfaceActive) {
+      <app-atm-screen (onExit)="exitAtm()"></app-atm-screen>
+    }
+  </div>
+</div>
