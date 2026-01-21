@@ -41,7 +41,7 @@ El objetivo principal de este proyecto es demostrar cómo construir un sistema f
 
 ### Frontend (Cliente)
 * **Framework:** Angular 17+
-* **Estilos:** Bootstrap / CSS Custom
+* **Estilos:** Tailwind / CSS Custom
 * **Arquitectura:** Componentes Standalone, Servicios tipados y Guards.
 
 ---
